@@ -1,34 +1,52 @@
 {
   "expo": {
+    "name": "InfinTV",
+    "slug": "InfinTV",
+    "version": "1.0.0",
+    "orientation": "landscape",
+    "icon": "./assets/images/icon-1280x768.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/images/icon-1280x768.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon-1280x768.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.infintv.app"
+    },
+    "web": {
+      "favicon": "./assets/images/icon-1280x768.png"
+    },
     "plugins": [
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
+      ],
       [
         "@react-native-tvos/config-tv",
         {
-          "androidTVBanner": "./assets/images/icon-400x240.png",
-          "appleTVImages": {
-            "icon": "./assets/images/icon-1280x768.png",
-            "iconSmall": "./assets/images/icon-400x240.png",
-            "iconSmall2x": "./assets/images/icon-800x480.png",
-            "topShelf": "./assets/images/icon-1920x720.png",
-            "topShelf2x": "./assets/images/icon-3840x1440.png",
-            "topShelfWide": "./assets/images/icon-2320x720.png",
-            "topShelfWide2x": "./assets/images/icon-4640x1440.png"
-          }
+          "androidTVBanner": "./assets/images/tv-banner.png"
         }
       ]
     ],
-    "android": {
-      "splash": {
-        "image": "./assets/images/icon-1920x720.png"
+    "extra": {
+      "eas": {
+        "projectId": "9144e09f-00dd-451a-aa36-a10002d6ab9f"
       }
     },
-    "ios": {
-      "splash": {
-        "image": "./assets/images/icon-1920x720.png"
-      }
-    },
-    "newArchEnabled": true,
-    "name": "InfinTV",
-    "slug": "InfinTV"
+    "owner": "umitcoban"
   }
 }
