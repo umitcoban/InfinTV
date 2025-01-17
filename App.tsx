@@ -1,5 +1,5 @@
 import { VideoView, useVideoPlayer } from 'expo-video';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BackHandler, Pressable, SafeAreaView, StyleSheet, View } from 'react-native';
 import ChannelList from './components/ChannelList';
 import SearchBar from './components/SearchBar';
@@ -11,59 +11,61 @@ export default function App() {
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const player = useVideoPlayer(selectedChannel?.url || null, player => {
-    player.loop = true;
-    if (selectedChannel && isFullscreen) {
-      player.play();
+  const player = useVideoPlayer(null, player => {
+    if (player) {
+      player.loop = true;
     }
   });
 
-  // Uygulama kapatıldığında medyayı durdur
+  // Kanal değiştiğinde video yükleme
   useEffect(() => {
-    return () => {
-      if (player) {
-        player.pause();
-      }
-    };
-  }, [player]);
+    if (player && selectedChannel && isFullscreen) {
+      player.replace(selectedChannel.url);
+      player.play();
+    }
+  }, [selectedChannel, isFullscreen]);
 
   // Tam ekran değiştiğinde medya kontrolü
   useEffect(() => {
     if (!isFullscreen && player) {
-      player.pause();
+      try {
+        player.pause();
+      } catch (error) {
+        console.error('Video durdurulurken hata:', error);
+      }
     }
-  }, [isFullscreen, player]);
+  }, [isFullscreen]);
 
   // Geri tuşu kontrolü
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       if (isFullscreen) {
         setIsFullscreen(false);
-        if (player) {
-          player.pause();
-        }
         return true;
       }
       return false;
     });
 
-    return () => backHandler.remove();
-  }, [isFullscreen, player]);
+    return () => {
+      backHandler.remove();
+    };
+  }, [isFullscreen]);
 
-  const handleChannelSelect = (channel: Channel) => {
+  const handleChannelSelect = useCallback((channel: Channel) => {
     setSelectedChannel(channel);
     setIsFullscreen(true);
-    if (player) {
-      player.replace(channel.url);
-    }
-  };
+  }, []);
 
-  const handleVideoPress = () => {
-    setIsFullscreen(false);
+  const handleVideoPress = useCallback(() => {
     if (player) {
-      player.pause();
+      try {
+        player.pause();
+      } catch (error) {
+        console.error('Video durdurulurken hata:', error);
+      }
     }
-  };
+    setIsFullscreen(false);
+  }, [player]);
 
   return (
     <SafeAreaView style={styles.container}>
