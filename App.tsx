@@ -48,7 +48,7 @@ export default function App() {
     }
   }, []));
 
-  // Kanal değiştiğinde video yükleme
+  // detect channel change
   useEffect(() => {
     if (player && selectedChannel && isFullscreen) {
       const loadVideo = async () => {
@@ -63,7 +63,7 @@ export default function App() {
     }
   }, [selectedChannel, isFullscreen, player]);
 
-  // Tam ekran değiştiğinde medya kontrolü
+  // detect full screen change
   useEffect(() => {
     if (!isFullscreen && player) {
       const pauseVideo = async () => {
@@ -77,7 +77,7 @@ export default function App() {
     }
   }, [isFullscreen, player]);
 
-  // Geri tuşu kontrolü
+  // Back button control
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       if (isFullscreen) {
